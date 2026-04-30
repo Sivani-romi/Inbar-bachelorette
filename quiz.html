@@ -117,7 +117,8 @@
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    const questions = [
+    // ── סט שאלות ראשון ──
+    const questions1 = [
       {
         text: "מה היא עיר המגורים של ענבר?",
         options: ["תל אביב", "ירושלים", "גבעתיים", "רמת גן"],
@@ -180,12 +181,79 @@
       }
     ];
 
+    // ── סט שאלות שני — ✏️ עדכני את השאלות! ──
+    const questions2 = [
+      {
+        text: "שאלה 1 — ניסיון שני (עדכני!)",
+        options: ["א", "ב", "ג", "ד"],
+        correct: 0,
+        explanation: "הסבר לתשובה הנכונה ✅"
+      },
+      {
+        text: "שאלה 2 — ניסיון שני (עדכני!)",
+        options: ["א", "ב", "ג", "ד"],
+        correct: 0,
+        explanation: "הסבר לתשובה הנכונה ✅"
+      },
+      {
+        text: "שאלה 3 — ניסיון שני (עדכני!)",
+        options: ["א", "ב", "ג", "ד"],
+        correct: 0,
+        explanation: "הסבר לתשובה הנכונה ✅"
+      },
+      {
+        text: "שאלה 4 — ניסיון שני (עדכני!)",
+        options: ["א", "ב", "ג", "ד"],
+        correct: 0,
+        explanation: "הסבר לתשובה הנכונה ✅"
+      },
+      {
+        text: "שאלה 5 — ניסיון שני (עדכני!)",
+        options: ["א", "ב", "ג", "ד"],
+        correct: 0,
+        explanation: "הסבר לתשובה הנכונה ✅"
+      },
+      {
+        text: "שאלה 6 — ניסיון שני (עדכני!)",
+        options: ["א", "ב", "ג", "ד"],
+        correct: 0,
+        explanation: "הסבר לתשובה הנכונה ✅"
+      },
+      {
+        text: "שאלה 7 — ניסיון שני (עדכני!)",
+        options: ["א", "ב", "ג", "ד"],
+        correct: 0,
+        explanation: "הסבר לתשובה הנכונה ✅"
+      },
+      {
+        text: "שאלה 8 — ניסיון שני (עדכני!)",
+        options: ["א", "ב", "ג", "ד"],
+        correct: 0,
+        explanation: "הסבר לתשובה הנכונה ✅"
+      },
+      {
+        text: "שאלה 9 — ניסיון שני (עדכני!)",
+        options: ["א", "ב", "ג", "ד"],
+        correct: 0,
+        explanation: "הסבר לתשובה הנכונה ✅"
+      },
+      {
+        text: "שאלה 10 — ניסיון שני (עדכני!)",
+        options: ["א", "ב", "ג", "ד"],
+        correct: 0,
+        explanation: "הסבר לתשובה הנכונה ✅"
+      }
+    ];
+
+    let questions = questions1;
+
     // ── State ──
     let currentQ = 0;
     let score    = 0;
     let answered = false;
     let userAnswers = [];
     let participantName = '';
+    let attemptNumber = 1;
 
     // ── DOM refs ──
     const introScreen  = document.getElementById('introScreen');
@@ -321,6 +389,7 @@
       try {
         await addDoc(collection(db, 'quiz_scores'), {
           participantName: participantName,
+          attemptNumber: attemptNumber,
           score: score,
           totalQuestions: questions.length,
           percentage: Math.round(pct * 100),
@@ -330,6 +399,15 @@
         saveSuccess.classList.add('show');
       } catch (err) {
         console.error('Error saving score:', err);
+      }
+
+      // הצג כפתור "עוד 10 שאלות" רק אחרי ניסיון ראשון
+      const retryBtn = document.getElementById('retryBtn');
+      if (attemptNumber === 1) {
+        retryBtn.textContent = 'עוד 10 שאלות על ענבר 🎯';
+        retryBtn.style.display = 'flex';
+      } else {
+        retryBtn.style.display = 'none';
       }
 
       // Review
@@ -347,10 +425,13 @@
     }
 
     document.getElementById('retryBtn').addEventListener('click', () => {
-      currentQ    = 0;
-      score       = 0;
-      answered    = false;
-      userAnswers = [];
+      // עוברים לסט השאלות השני
+      attemptNumber = 2;
+      questions     = questions2;
+      currentQ      = 0;
+      score         = 0;
+      answered      = false;
+      userAnswers   = [];
       progressFill.style.width = '0%';
       document.getElementById('reviewList').innerHTML = '';
       saveSuccess.classList.remove('show');
