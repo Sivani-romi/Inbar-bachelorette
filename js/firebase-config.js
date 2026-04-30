@@ -11,12 +11,12 @@ import { getStorage }    from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 
 // 🔥 PASTE YOUR FIREBASE CONFIG OBJECT HERE ↓
 const firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId:             "YOUR_APP_ID"
+  apiKey:            "AIzaSyDvCDZZvIzoseRdVbv1ecau9q1-hFf7hPE",
+  authDomain:        "inbar-bachelorette.firebaseapp.com",
+  projectId:         "inbar-bachelorette",
+  storageBucket:     "inbar-bachelorette.firebasestorage.app",
+  messagingSenderId: "433390242188",
+  appId:             "1:433390242188:web:d8fe0ad0c373ccb9db6ea9"
 };
 
 // Initialize Firebase

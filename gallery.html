@@ -16,217 +16,50 @@
     <header class="page-header fade-in">
       <span class="emoji">📸</span>
       <h1>תמונות מהמסיבה</h1>
-      <p>העלו את התמונות הכי טובות מהיום!</p>
+      <p>כל הזיכרונות של היום המיוחד במקום אחד 💗</p>
     </header>
 
-    <!-- Upload Card -->
-    <div class="card upload-card fade-in" style="animation-delay:0.1s">
-      <div class="upload-zone" id="uploadZone">
-        <input type="file" accept="image/*" id="fileInput" class="file-input" multiple />
-        <label for="fileInput" class="upload-label">
-          <div class="upload-icon">📷</div>
-          <p class="upload-text">לחצי להוספת תמונות</p>
-          <p class="upload-sub">JPG, PNG, HEIC · עד 10MB לתמונה</p>
-        </label>
-      </div>
-      <div class="upload-preview" id="uploadPreview" style="display:none;">
-        <img id="previewImg" src="" alt="תצוגה מקדימה" class="preview-img" />
-        <div class="preview-actions">
-          <button class="btn btn-primary" id="uploadBtn">העלאת תמונה 🚀</button>
-          <button class="btn btn-outline" id="cancelBtn" style="margin-top:8px;">ביטול</button>
-        </div>
-      </div>
-      <!-- Progress -->
-      <div class="upload-progress" id="progressWrap" style="display:none;">
-        <div class="progress-bar">
-          <div class="progress-fill" id="progressFill"></div>
-        </div>
-        <p class="progress-text" id="progressText">מעלה... 0%</p>
-      </div>
-      <div class="alert alert-success" id="successAlert">✅ התמונה הועלתה! היא תופיע למטה בקרוב.</div>
-      <div class="alert alert-error"   id="errorAlert">❌ ההעלאה נכשלה. נסי שוב.</div>
+    <!-- Main CTA Card -->
+    <div class="card gallery-cta-card fade-in" style="animation-delay:0.1s">
+      <div class="gallery-cta-icon">🖼️</div>
+      <h2 class="gallery-cta-title">אלבום משותף</h2>
+      <p class="gallery-cta-desc">
+        לצפייה בתמונות ולהעלאת תמונות משלך —<br/>
+        לחצי על הכפתור למטה ותגיעי ישירות לאלבום!
+      </p>
+      <a
+        href="https://photos.app.goo.gl/sn8LCvM6edmygt9XA"
+        target="_blank"
+        rel="noopener"
+        class="btn btn-primary gallery-btn"
+      >
+        📷 פתחי את האלבום
+      </a>
     </div>
 
-    <!-- Gallery Grid -->
-    <div class="gallery-header fade-in" style="animation-delay:0.15s">
-      <h2>הזיכרונות שלנו</h2>
-      <span class="photo-count" id="photoCount">טוען...</span>
+    <!-- How to upload -->
+    <div class="card instructions-card fade-in" style="animation-delay:0.2s">
+      <h3 class="instructions-title">איך מוסיפים תמונות?</h3>
+      <ol class="instructions-list">
+        <li>
+          <span class="step-num">1</span>
+          <span>לחצי על "פתחי את האלבום" למעלה</span>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <span>לחצי על הכפתור <strong>הוסף תמונות</strong> (+ או ענן)</span>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <span>בחרי תמונות מהגלריה שלך — וזהו! 🎉</span>
+        </li>
+      </ol>
     </div>
 
-    <div class="gallery-grid" id="galleryGrid">
-      <div class="gallery-loading">
-        <div class="loading-spinner"></div>
-        <p>טוען תמונות...</p>
-      </div>
-    </div>
-
-    <!-- Lightbox -->
-    <div class="lightbox" id="lightbox">
-      <button class="lightbox-close" id="lightboxClose">✕</button>
-      <img class="lightbox-img" id="lightboxImg" src="" alt="תמונה מלאה" />
-    </div>
+    <p class="gallery-footnote fade-in" style="animation-delay:0.3s">
+      התמונות נשמרות לנצח באלבום המשותף 💾
+    </p>
 
   </div>
-
-  <script type="module">
-    import { db, storage } from './js/firebase-config.js';
-    import {
-      collection,
-      addDoc,
-      onSnapshot,
-      orderBy,
-      query,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-    import {
-      ref,
-      uploadBytesResumable,
-      getDownloadURL
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
-
-    // ── DOM refs ──
-    const fileInput    = document.getElementById('fileInput');
-    const uploadZone   = document.getElementById('uploadZone');
-    const previewSection = document.getElementById('uploadPreview');
-    const previewImg   = document.getElementById('previewImg');
-    const uploadBtn    = document.getElementById('uploadBtn');
-    const cancelBtn    = document.getElementById('cancelBtn');
-    const progressWrap = document.getElementById('progressWrap');
-    const progressFill = document.getElementById('progressFill');
-    const progressText = document.getElementById('progressText');
-    const successAlert = document.getElementById('successAlert');
-    const errorAlert   = document.getElementById('errorAlert');
-    const galleryGrid  = document.getElementById('galleryGrid');
-    const photoCount   = document.getElementById('photoCount');
-    const lightbox     = document.getElementById('lightbox');
-    const lightboxImg  = document.getElementById('lightboxImg');
-    const lightboxClose= document.getElementById('lightboxClose');
-
-    let selectedFile = null;
-
-    // ── File selection ──
-    fileInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      if (file.size > 10 * 1024 * 1024) {
-        alert('הקובץ גדול מדי. מקסימום 10MB.');
-        return;
-      }
-      selectedFile = file;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        previewImg.src = ev.target.result;
-        uploadZone.style.display = 'none';
-        previewSection.style.display = 'block';
-      };
-      reader.readAsDataURL(file);
-    });
-
-    cancelBtn.addEventListener('click', resetUpload);
-
-    function resetUpload() {
-      selectedFile = null;
-      fileInput.value = '';
-      previewSection.style.display = 'none';
-      progressWrap.style.display = 'none';
-      uploadZone.style.display = 'block';
-      successAlert.classList.remove('show');
-      errorAlert.classList.remove('show');
-    }
-
-    // ── Upload to Firebase Storage ──
-    uploadBtn.addEventListener('click', async () => {
-      if (!selectedFile) return;
-
-      const fileName = `${Date.now()}_${selectedFile.name}`;
-      const storageRef = ref(storage, `gallery_images/${fileName}`);
-      const uploadTask = uploadBytesResumable(storageRef, selectedFile);
-
-      uploadBtn.disabled = true;
-      previewSection.style.display = 'none';
-      progressWrap.style.display = 'block';
-      successAlert.classList.remove('show');
-      errorAlert.classList.remove('show');
-
-      uploadTask.on('state_changed',
-        (snapshot) => {
-          const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-          progressFill.style.width = pct + '%';
-          progressText.textContent = `מעלה... ${pct}%`;
-        },
-        (err) => {
-          console.error(err);
-          progressWrap.style.display = 'none';
-          uploadZone.style.display = 'block';
-          errorAlert.classList.add('show');
-          uploadBtn.disabled = false;
-        },
-        async () => {
-          try {
-            const url = await getDownloadURL(uploadTask.snapshot.ref);
-            await addDoc(collection(db, 'gallery_images'), {
-              url,
-              fileName,
-              uploadedAt: serverTimestamp()
-            });
-            progressWrap.style.display = 'none';
-            uploadZone.style.display = 'block';
-            successAlert.classList.add('show');
-            uploadBtn.disabled = false;
-            resetUpload();
-          } catch (err) {
-            console.error(err);
-            errorAlert.classList.add('show');
-            uploadBtn.disabled = false;
-          }
-        }
-      );
-    });
-
-    // ── Real-time gallery listener ──
-    const q = query(collection(db, 'gallery_images'), orderBy('uploadedAt', 'desc'));
-
-    onSnapshot(q, (snapshot) => {
-      const count = snapshot.size;
-      photoCount.textContent = `${count} תמונות`;
-
-      if (count === 0) {
-        galleryGrid.innerHTML = `
-          <div class="gallery-empty">
-            <p>📭 עדיין אין תמונות — היי הראשונה להעלות!</p>
-          </div>`;
-        return;
-      }
-
-      galleryGrid.innerHTML = '';
-      snapshot.forEach((doc) => {
-        const { url } = doc.data();
-        const img = document.createElement('img');
-        img.src = url;
-        img.alt = 'תמונה מהמסיבה';
-        img.className = 'gallery-img';
-        img.loading = 'lazy';
-        img.addEventListener('click', () => openLightbox(url));
-        galleryGrid.appendChild(img);
-      });
-    }, (err) => {
-      console.error(err);
-      galleryGrid.innerHTML = `<div class="gallery-empty"><p>❌ טעינת התמונות נכשלה.</p></div>`;
-    });
-
-    // ── Lightbox ──
-    function openLightbox(url) {
-      lightboxImg.src = url;
-      lightbox.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeLightbox() {
-      lightbox.classList.remove('active');
-      document.body.style.overflow = '';
-      lightboxImg.src = '';
-    }
-    lightboxClose.addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
-  </script>
 </body>
 </html>
