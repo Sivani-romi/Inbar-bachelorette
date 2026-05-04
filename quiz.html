@@ -113,7 +113,8 @@
     import { db } from './js/firebase-config.js';
     import {
       collection,
-      addDoc,
+      doc,
+      setDoc,
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -389,7 +390,8 @@
 
       // Save score to Firebase
       try {
-        await addDoc(collection(db, 'quiz_scores'), {
+        const docId = `${participantName}_attempt${attemptNumber}`;
+        await setDoc(doc(db, 'quiz_scores', docId), {
           participantName: participantName,
           attemptNumber: attemptNumber,
           score: score,
