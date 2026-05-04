@@ -390,7 +390,7 @@
 
       // Save score to Firebase
       try {
-        const today = new Date().toISOString().slice(0, 10);
+        const today = '2026-05-05'; // TEST - מחר
         const docId = `${participantName}_${today}_attempt${attemptNumber}`;
         await setDoc(doc(db, 'quiz_scores', docId), {
           participantName: participantName,
