@@ -30,8 +30,8 @@
       </div>
       <div class="divider"></div>
       <address class="address-block">
-        <p>שדרות רוטשילד 28</p>
-        <p>תל אביב-יפו, 6688314</p>
+        <p>דרך הים 2</p>
+        <p>הוד השרון</p>
         <p>ישראל</p>
       </address>
       <button class="btn btn-outline copy-addr-btn" id="copyAddr" style="margin-top:14px;width:auto;padding:10px 20px;font-size:0.85rem;">
@@ -49,7 +49,7 @@
       -->
       <iframe
         class="map-iframe"
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3381.2!2d34.7748!3d32.0656!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d4b82!2sRothschild+Blvd%2C+Tel+Aviv!5e0!3m2!1sen!2sil!4v1"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3375.1!2d34.8944089!3d32.1356667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d3797b5e8f1bf:0x635d50dc00b7b178!2sHaYam+Rd+2%2C+Hod+HaSharon!5e0!3m2!1siw!2sil!4v1"
         width="100%"
         height="220"
         style="border:0;"
@@ -68,7 +68,7 @@
           INSTRUCTIONS: Replace the lat/lon values with your venue's actual coordinates.
           Waze deep link format: https://waze.com/ul?ll=LAT,LON&navigate=yes
         -->
-        <a href="https://waze.com/ul?ll=32.0656,34.7748&navigate=yes"
+        <a href="https://ul.waze.com/ul?place=EiBIYVlhbSBSZCAyLCBIb2QgSGFzaGFyb24sIElzcmFlbCIwEi4KFAoSCb_x6LWXNx0VEaAquujS64MeEAIqFAoSCeu25-69Nx0VEXjojb9cZ_7v&ll=32.13788960%2C34.89420900&navigate=yes&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location"
            class="btn btn-waze"
            target="_blank"
            rel="noopener noreferrer">
@@ -80,7 +80,7 @@
         <!--
           Google Maps deep link: https://maps.google.com/maps?q=LAT,LON
         -->
-        <a href="https://maps.google.com/maps?q=32.0656,34.7748"
+        <a href="https://www.google.com/maps/place/HaYam+Rd+2,+Hod+Hasharon/@32.1356667,34.8944089,15.25z/data=!4m5!3m4!1s0x151d3797b5e8f1bf:0x635d50dc00b7b178!8m2!3d32.1378896!4d34.894209?entry=ttu&g_ep=EgoyMDI2MDYyNC4wIKXMDSoASAFQAw%3D%3D"
            class="btn btn-gmaps"
            target="_blank"
            rel="noopener noreferrer">
@@ -105,7 +105,7 @@
   <script>
     // Copy address to clipboard
     document.getElementById('copyAddr').addEventListener('click', () => {
-      const address = 'שדרות רוטשילד 28, תל אביב-יפו, 6688314, ישראל';
+      const address = 'דרך הים 2, הוד השרון, ישראל';
       navigator.clipboard.writeText(address).then(() => {
         const confirm = document.getElementById('copyConfirm');
         confirm.classList.add('show');
