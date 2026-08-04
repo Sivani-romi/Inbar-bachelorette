@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>💌 אישור הגעה — מסיבת רווקות</title>
+  <title>🍽️ אוכל ורגישויות — מסיבת רווקות</title>
   <link rel="stylesheet" href="css/global.css" />
   <link rel="stylesheet" href="css/rsvp.css" />
 </head>
@@ -14,9 +14,9 @@
     <a href="index.html" class="back-btn">חזרה לתפריט</a>
 
     <header class="page-header fade-in">
-      <span class="emoji">💌</span>
-      <h1>אישור הגעה</h1>
-      <p>נשמח לדעת אם את מצטרפת אלינו!</p>
+      <span class="emoji">🍽️</span>
+      <h1>אוכל ורגישויות</h1>
+      <p>ספרי לנו על אלרגיות או העדפות תזונתיות שחשוב שנדע עליהן</p>
     </header>
 
     <div class="card fade-in" style="animation-delay:0.1s">
@@ -35,21 +35,6 @@
           />
         </div>
 
-        <!-- Attending -->
-        <div class="form-group">
-          <label>האם תגיעי? *</label>
-          <div class="radio-group">
-            <div class="radio-option">
-              <input type="radio" name="attending" id="attendYes" value="yes" required />
-              <label for="attendYes">🥂 כן, אני מגיעה!</label>
-            </div>
-            <div class="radio-option">
-              <input type="radio" name="attending" id="attendNo" value="no" />
-              <label for="attendNo">😢 מצטערת, לא אוכל להגיע</label>
-            </div>
-          </div>
-        </div>
-
         <!-- Dietary -->
         <div class="form-group" id="dietarySection">
           <label for="dietary">אלרגיות / העדפות תזונתיות</label>
@@ -62,14 +47,14 @@
 
         <!-- Submit -->
         <button type="submit" class="btn btn-primary" id="submitBtn">
-          <span id="btnText">שליחת אישור הגעה 💗</span>
+          <span id="btnText">שליחת פרטים 💗</span>
           <span id="btnSpinner" class="spinner" style="display:none;"></span>
         </button>
 
       </form>
 
       <div class="alert alert-success" id="successAlert">
-        🎉 תודה! אישור ההגעה שלך התקבל. לא יכולות לחכות לחגוג איתך!
+        🎉 תודה! הפרטים שלך התקבלו.
       </div>
       <div class="alert alert-error" id="errorAlert">
         ❌ אופס! משהו השתבש. נסי שוב או צרי קשר עם המארגנת.
@@ -78,7 +63,7 @@
 
     <!-- Already submitted? -->
     <p class="rsvp-footnote fade-in" style="animation-delay:0.25s">
-      כבר אישרת הגעה? צרי קשר עם המארגנת לכל שינוי. 💬
+      כבר מילאת? צרי קשר עם המארגנת לכל שינוי. 💬
     </p>
 
   </div>
@@ -103,16 +88,11 @@
       e.preventDefault();
 
       const fullName = document.getElementById('fullName').value.trim();
-      const attending = form.querySelector('input[name="attending"]:checked');
       const dietary  = document.getElementById('dietary').value.trim();
 
       // Validation
       if (!fullName) {
         alert('נא להזין שם מלא.');
-        return;
-      }
-      if (!attending) {
-        alert('נא לבחור האם את מגיעה.');
         return;
       }
 
@@ -126,7 +106,6 @@
       try {
         await addDoc(collection(db, 'rsvp_list'), {
           fullName,
-          attending: attending.value,
           dietary: dietary || null,
           submittedAt: serverTimestamp()
         });
