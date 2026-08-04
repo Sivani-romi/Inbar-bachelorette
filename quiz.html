@@ -122,9 +122,13 @@
     const questions1 = [
       {
         text: "מה היא עיר המגורים של ענבר?",
-        options: ["תל אביב", "ירושלים", "גבעתיים", "רמת גן"],
-        correct: 2,
-        explanation: "ענבר גרה בגבעתיים 🏙️"
+        options: ["ירושלים", "תל אביב", "גבעתיים", "ראשון לציון"],
+        correct: 3,
+        explanation: "כל הכבוד על היותך מעודכנת",
+        wrongExplanations: {
+          2: "לא נורא, היא עברה ממש לאחרונה"
+        },
+        explanationWrong: "תרשמי לפעם הבאה : ענבר גרה ב - ירושלים > תל אביב > גבעתיים > ראשון"
       },
       {
         text: "איזה מזל ענבר?",
@@ -350,7 +354,14 @@
       // Show explanation
       const exp = document.createElement('div');
       exp.className = 'explanation ' + (isCorrect ? 'exp-correct' : 'exp-wrong');
-      const explanationText = !isCorrect && q.explanationWrong ? q.explanationWrong : q.explanation;
+      let explanationText = q.explanation;
+      if (!isCorrect) {
+        if (q.wrongExplanations && q.wrongExplanations[index] !== undefined) {
+          explanationText = q.wrongExplanations[index];
+        } else if (q.explanationWrong) {
+          explanationText = q.explanationWrong;
+        }
+      }
       exp.textContent = (isCorrect ? '✅ ' : '❌ ') + explanationText;
       optionsList.appendChild(exp);
 
