@@ -58,19 +58,6 @@
         <span class="method-logo">Paybox</span>
         <span>תשלום ב-Paybox</span>
       </a>
-
-      <div class="divider"></div>
-
-      <!-- Copy phone number -->
-      <div class="copy-section">
-        <p class="copy-label">או העברה בנקאית — העתיקו את מספר הטלפון:</p>
-        <div class="copy-row">
-          <!--  ✏️ EDIT: Change the phone number below -->
-          <span class="phone-number" id="phoneNum">050-123-4567</span>
-          <button class="btn btn-outline copy-btn" id="copyBtn">📋 העתקה</button>
-        </div>
-        <span id="copyConfirm" class="copy-confirm">הועתק! ✓</span>
-      </div>
     </div>
 
     <!-- Note -->
@@ -87,15 +74,5 @@
 
   </div>
 
-  <script>
-    document.getElementById('copyBtn').addEventListener('click', () => {
-      const phone = document.getElementById('phoneNum').textContent;
-      navigator.clipboard.writeText(phone).then(() => {
-        const el = document.getElementById('copyConfirm');
-        el.classList.add('show');
-        setTimeout(() => el.classList.remove('show'), 2500);
-      });
-    });
-  </script>
 </body>
 </html>
